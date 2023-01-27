@@ -1,35 +1,35 @@
 import React, { createContext, useState, useContext } from "react";
 
-const ThemeContext = createContext();
+const LikeContext = createContext();
 
-export const themes = {
-  light: {
+export const likes = {
+  curtir: {
     colors: {
       background: "white",
       text: "black"
     }
   },
-  dark: {
+  descurtir: {
     colors: {
-      background: "black",
+      background: "red",
       text: "white"
     }
   }
 };
 
-export default function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(themes.light);
+export default function LikeProvider({ children }) {
+  const [like, setLike] = useState([]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <LikeContext.Provider value={{ like, setLike }}>
       {children}
-    </ThemeContext.Provider>
+    </LikeContext.Provider>
   );
 }
 
-export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) throw new Error("useTheme must be used within a ThemeProvider");
-  const { theme, setTheme } = context;
-  return { theme, setTheme };
+export function useLike() {
+  const context = useContext(LikeContext);
+  if (!context) throw new Error("uselike must be used within a likeProvider");
+  const { like, setLike } = context;
+  return { like, setLike };
 }

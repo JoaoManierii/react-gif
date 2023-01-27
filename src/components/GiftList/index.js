@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import './style.css'
-import { useTheme, themes } from "../../Context/LikeContext";
-
+import { useLike, likes } from "../../Context/LikeContext";
+import { Heart } from "phosphor-react";
 
 function GifList({ children }) {
   const [gifs, setGifs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const { theme, setTheme } = useTheme();
+  const { like, setLike } = useLike();
 
   function fetchGif() {
     fetch(`https://api.giphy.com/v1/gifs/search?api_key=0KsgY9RDhjhS6Nrvxaojmz7FYvEi21fQ&q=${searchTerm}&limit=20`)
@@ -27,21 +27,22 @@ function GifList({ children }) {
             <img src={gif.images.original.url} alt={gif.title} />
 
             <div
-      style={{
-        background: theme.colors.background,
-        color: theme.colors.text
-      }}
-    >
-      {children}
-      <hr />
-      <button
-        onClick={() =>
-          setTheme(theme === themes.light ? themes.dark : themes.light)
-        }
-      >
-        {theme === themes.light ? "Toggle dark mode" : "Toggle light mode"}
-      </button>
-    </div>
+
+            >
+              {children}
+              <hr />
+
+              <Heart style={{
+                color: like.includes(gif.id) ? "red" : "black"
+              }} size={32} onClick={() => {
+                if (like.includes(gif.id)) {
+                  setLike(like.filter(item => item !== gif.id));
+                  return
+                }
+                setLike([...like, gif.id])
+              }} />
+
+            </div>
           </div>
         ))}  </div>
     </div>
